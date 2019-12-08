@@ -20,6 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//TODO: add exports
+//exports
+mod token_type;
+pub use token_type::TokenType;
 
 //end of file
