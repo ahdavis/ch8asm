@@ -1,6 +1,6 @@
 /*
- * mod.rs
- * Module header for the util module for ch8asm
+ * constants.rs
+ * Defines constants for ch8asm
  * Created on 12/8/2019
  * Created by Andrew Davis
  *
@@ -20,7 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//exports
-pub mod constants;
+//no usage statements
+
+/// The address of the start of program memory
+pub const MEM_START: u16 = 0x0200;
 
 //end of file
