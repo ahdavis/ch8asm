@@ -20,7 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//no imports
+//import
+use std::cmp;
 
 /// Contains a single variable of various types
 #[derive(Clone)]
@@ -33,6 +34,32 @@ pub enum Variant {
 
     /// A string of text
     Text(String)
+}
+
+//PartialEq implementation
+impl cmp::PartialEq for Variant {
+    fn eq(&self, rhs: &Self) -> bool {
+        return match *self {
+            Variant::Byte(ref b1) => {
+                match *rhs {
+                    Variant::Byte(ref b2) => (b1 == b2),
+                    _ => false
+                }
+            },
+            Variant::Word(ref w1) => {
+                match *rhs {
+                    Variant::Word(ref w2) => (w1 == w2),
+                    _ => false 
+                }
+            },
+            Variant::Text(ref t1) => {
+                match *rhs {
+                    Variant::Text(ref t2) => (t1 == t2),
+                    _ => false 
+                }
+            }
+        };
+    }
 }
 
 //end of file
