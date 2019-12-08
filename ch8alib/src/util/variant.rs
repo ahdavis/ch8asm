@@ -23,6 +23,7 @@
 //no imports
 
 /// Contains a single variable of various types
+#[derive(Clone)]
 pub enum Variant {
     /// A single byte 
     Byte(u8),
