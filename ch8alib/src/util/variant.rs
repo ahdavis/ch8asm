@@ -1,6 +1,6 @@
 /*
- * mod.rs
- * Module header for the util module for ch8asm
+ * variant.rs
+ * Defines an enum that manages values of different types
  * Created on 12/8/2019
  * Created by Andrew Davis
  *
@@ -20,9 +20,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//exports
-pub mod constants;
-mod variant;
-pub use variant::Variant;
+//no imports
+
+/// Contains a single variable of various types
+pub enum Variant {
+    /// A single byte 
+    Byte(u8),
+
+    /// A two-byte word
+    Word(u16),
+
+    /// A string of text
+    Text(String)
+}
 
 //end of file
