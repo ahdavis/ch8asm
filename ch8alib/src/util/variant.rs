@@ -24,7 +24,7 @@
 use std::cmp;
 
 /// Contains a single variable of various types
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Variant {
     /// A single byte 
     Byte(u8),
@@ -59,6 +59,32 @@ impl cmp::PartialEq for Variant {
                 }
             }
         };
+    }
+}
+
+//unit tests
+#[cfg(test)]
+mod tests {
+    //import the Variant enum
+    use super::*;
+
+    //this test checks equality comparisons
+    #[test]
+    fn test_equality() {
+        let v1 = Variant::Byte(0xFF);
+        let v2 = Variant::Byte(0xFF);
+        assert_eq!(v1, v2);
+        assert_eq!(v1, v1);
+    }
+
+    //this test checks inequality comparisons
+    #[test]
+    fn test_inequality() {
+        let v1 = Variant::Word(0xFC00);
+        let v2 = Variant::Word(0xDEAD);
+        let v3 = Variant::Text(String::from("Hello World!"));
+        assert_ne!(v1, v2);
+        assert_ne!(v1, v3);
     }
 }
 
