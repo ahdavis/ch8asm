@@ -1,6 +1,6 @@
 /*
- * lib.rs
- * Export file for ch8alib
+ * mod.rs
+ * Module header for the error module for ch8asm
  * Created on 12/8/2019
  * Created by Andrew Davis
  *
@@ -20,9 +20,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//exports
-pub mod util;
-pub mod lex;
-pub mod error;
+//TODO: Add exports
 
 //end of file
