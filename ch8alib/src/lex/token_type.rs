@@ -24,6 +24,7 @@
 use std::fmt;
 
 /// The type of a program `Token`
+#[derive(Clone)]
 pub enum TokenType {
     /// An assembly instruction
     Instruction,
