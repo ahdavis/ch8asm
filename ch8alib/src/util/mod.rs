@@ -1,6 +1,6 @@
 /*
- * lib.rs
- * Export file for ch8alib
+ * mod.rs
+ * Module header for the util module for ch8asm
  * Created on 12/8/2019
  * Created by Andrew Davis
  *
@@ -20,7 +20,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//exports
-pub mod util;
-
-//end of file
+//TODO: Add exports
