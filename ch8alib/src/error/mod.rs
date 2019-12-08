@@ -20,6 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//TODO: Add exports
+//exports
+mod lexer_error;
+pub use lexer_error::LexerError;
 
 //end of file
