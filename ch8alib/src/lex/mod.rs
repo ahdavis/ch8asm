@@ -23,5 +23,7 @@
 //exports
 mod token_type;
 pub use token_type::TokenType;
+mod token;
+pub use token::Token;
 
 //end of file
