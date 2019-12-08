@@ -23,8 +23,10 @@
 //usage statements
 use super::TokenType;
 use super::super::util::Variant;
+use std::cmp;
 
 /// A program token
+#[derive(Debug)]
 pub struct Token {
     /// The type of the `Token`
     ttype: TokenType,
@@ -68,6 +70,37 @@ impl Token {
     /// The value of the `Token`
     pub fn get_value(&self) -> Variant {
         return self.value.clone();
+    }
+}
+
+//PartialEq implementation
+impl cmp::PartialEq for Token {
+    fn eq(&self, rhs: &Self) -> bool {
+        return (self.ttype == rhs.ttype) && (self.value == rhs.value);
+    }
+}
+
+//unit tests
+#[cfg(test)]
+mod tests {
+    //import the Token struct
+    use super::*;
+
+    //this test checks equality comparisons
+    #[test]
+    fn test_equality() {
+        let t1 = Token::new(TokenType::DecLit, Variant::Word(0xDEAD));
+        let t2 = Token::new(TokenType::DecLit, Variant::Word(0xDEAD));
+        assert_eq!(t1, t2);
+        assert_eq!(t1, t1);
+    }
+
+    //this test checks inequality comparisons
+    #[test]
+    fn test_inequality() {
+        let t1 = Token::new(TokenType::Label, Variant::Word(0xFC00));
+        let t2 = Token::new(TokenType::Register, Variant::Byte(0x5));
+        assert_ne!(t1, t2);
     }
 }
 
