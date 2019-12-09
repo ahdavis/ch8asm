@@ -25,4 +25,16 @@
 /// The address of the start of program memory
 pub const MEM_START: u16 = 0x0200;
 
+/// The character that denotes the start of a comment
+pub const COMMENT_CHAR: char = ';';
+
+/// The character that denotes the start of a decimal literal
+pub const DEC_LIT_CHAR: char = '#';
+
+/// The character that denotes the start of a hex literal
+pub const HEX_LIT_CHAR: char = '$';
+
+/// The character that denotes the start of a binary literal
+pub const BIN_LIT_CHAR: char = '%';
+
 //end of file
