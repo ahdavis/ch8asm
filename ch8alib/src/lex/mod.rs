@@ -25,5 +25,7 @@ mod token_type;
 pub use token_type::TokenType;
 mod token;
 pub use token::Token;
+mod prep_lexer;
+pub use prep_lexer::PrepLexer;
 
 //end of file
