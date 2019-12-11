@@ -36,6 +36,61 @@ pub enum Variant {
     Text(String)
 }
 
+//implementation
+impl Variant {
+    /// Extracts the byte value of the `Variant`
+    ///
+    /// # Panics
+    ///
+    /// This method will panic if the `Variant`
+    /// does not represent a byte value
+    /// 
+    /// # Returns
+    ///
+    /// The byte value of the `Variant`
+    pub fn as_byte(&self) -> u8 {
+        return match *self {
+            Variant::Byte(b) => b,
+            _ => panic!("Variant {:?} is not a byte", *self)
+        };
+    }
+
+    /// Extracts the word value of the `Variant`
+    ///
+    /// # Panics
+    ///
+    /// This method will panic if the `Variant`
+    /// does not represent a word value
+    /// 
+    /// # Returns
+    ///
+    /// The word value of the `Variant`
+    pub fn as_word(&self) -> u16 {
+        return match *self {
+            Variant::Word(w) => w,
+            _ => panic!("Variant {:?} is not a word", *self)
+        };
+    }
+
+    /// Extracts the text value of the `Variant`
+    ///
+    /// # Panics
+    ///
+    /// This method will panic if the `Variant`
+    /// does not represent a text value
+    /// 
+    /// # Returns
+    ///
+    /// The text value of the `Variant`
+    pub fn as_text(&self) -> String {
+        return match *self {
+            Variant::Text(ref t) => t.clone(),
+            _ => panic!("Variant {:?} is not text", *self)
+        };
+    }
+
+}
+
 //PartialEq implementation
 impl cmp::PartialEq for Variant {
     fn eq(&self, rhs: &Self) -> bool {
@@ -85,6 +140,17 @@ mod tests {
         let v3 = Variant::Text(String::from("Hello World!"));
         assert_ne!(v1, v2);
         assert_ne!(v1, v3);
+    }
+
+    //this test checks unwrapping Variants
+    #[test]
+    fn test_unwrap() {
+        let v1 = Variant::Byte(0xFF);
+        assert_eq!(v1.as_byte(), 0xFF);
+        let v2 = Variant::Word(0xFC00);
+        assert_eq!(v2.as_word(), 0xFC00);
+        let v3 = Variant::Text(String::from("Hello"));
+        assert_eq!(v3.as_text(), String::from("Hello"));
     }
 }
 
