@@ -20,4 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//TODO: Add exports
+//exports
+mod addr_table;
+pub use addr_table::AddrTable;
+
+//end of file
