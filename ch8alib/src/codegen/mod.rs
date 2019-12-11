@@ -23,5 +23,7 @@
 //exports
 mod addr_table;
 pub use addr_table::AddrTable;
+mod preprocessor;
+pub use preprocessor::Preprocessor;
 
 //end of file
