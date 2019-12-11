@@ -65,7 +65,7 @@ impl PrepLexer {
     pub fn new(new_text: &str) -> Self {
         return PrepLexer {
             text: String::from(new_text),
-            cur_char: ' ',
+            cur_char: new_text.chars().nth(0).unwrap(),
             pos: 0,
             line: 1,
             col: 1,
