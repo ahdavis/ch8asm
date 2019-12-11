@@ -1,7 +1,7 @@
 /*
- * lib.rs
- * Export file for ch8alib
- * Created on 12/8/2019
+ * mod.rs
+ * Module header for the codegen module
+ * Created on 12/11/2019
  * Created by Andrew Davis
  *
  * Copyright (C) 2019  Andrew Davis
@@ -20,10 +20,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//exports
-pub mod util;
-pub mod lex;
-pub mod error;
-pub mod codegen;
-
-//end of file
+//TODO: Add exports
