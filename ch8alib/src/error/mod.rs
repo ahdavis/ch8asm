@@ -23,5 +23,7 @@
 //exports
 mod lexer_error;
 pub use lexer_error::LexerError;
+mod addr_error;
+pub use addr_error::AddrError;
 
 //end of file
