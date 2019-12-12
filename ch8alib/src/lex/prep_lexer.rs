@@ -222,6 +222,7 @@ impl PrepLexer {
         if self.pos > (self.text.len() - 1) {
             self.cur_char = '\0';
         } else {
+            self.col += 1;
             self.cur_char = self.text.chars().nth(self.pos).unwrap();
         }
     }
