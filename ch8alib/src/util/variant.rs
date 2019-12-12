@@ -20,8 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//import
+//usage statements
 use std::cmp;
+use super::super::error::VariantError;
 
 /// Contains a single variable of various types
 #[derive(Clone, Debug)]
@@ -39,53 +40,43 @@ pub enum Variant {
 //implementation
 impl Variant {
     /// Extracts the byte value of the `Variant`
-    ///
-    /// # Panics
-    ///
-    /// This method will panic if the `Variant`
-    /// does not represent a byte value
     /// 
     /// # Returns
     ///
-    /// The byte value of the `Variant`
-    pub fn as_byte(&self) -> u8 {
+    /// The byte value of the `Variant`, wrapped in a `Result`
+    pub fn as_byte(&self) -> Result<u8, VariantError> {
         return match *self {
-            Variant::Byte(b) => b,
-            _ => panic!("Variant {:?} is not a byte", *self)
+            Variant::Byte(b) => Ok(b),
+            Variant::Word(_w) => Err(VariantError::new("byte", "word")),
+            Variant::Text(ref _t) => Err(VariantError::new(
+                                        "byte", "text"))
         };
     }
 
     /// Extracts the word value of the `Variant`
     ///
-    /// # Panics
-    ///
-    /// This method will panic if the `Variant`
-    /// does not represent a word value
-    /// 
     /// # Returns
     ///
-    /// The word value of the `Variant`
-    pub fn as_word(&self) -> u16 {
+    /// The word value of the `Variant`, wrapped in a `Result`
+    pub fn as_word(&self) -> Result<u16, VariantError> {
         return match *self {
-            Variant::Word(w) => w,
-            _ => panic!("Variant {:?} is not a word", *self)
+            Variant::Word(w) => Ok(w),
+            Variant::Byte(_b) => Err(VariantError::new("word", "byte")),
+            Variant::Text(ref _t) => Err(VariantError::new(
+                                            "word", "text"))
         };
     }
 
     /// Extracts the text value of the `Variant`
-    ///
-    /// # Panics
-    ///
-    /// This method will panic if the `Variant`
-    /// does not represent a text value
     /// 
     /// # Returns
     ///
-    /// The text value of the `Variant`
-    pub fn as_text(&self) -> String {
+    /// The text value of the `Variant`, wrapped in a `Result`
+    pub fn as_text(&self) -> Result<String, VariantError> {
         return match *self {
-            Variant::Text(ref t) => t.clone(),
-            _ => panic!("Variant {:?} is not text", *self)
+            Variant::Text(ref t) => Ok(t.clone()),
+            Variant::Byte(_b) => Err(VariantError::new("text", "byte")),
+            Variant::Word(_w) => Err(VariantError::new("text", "word"))
         };
     }
 
@@ -146,11 +137,11 @@ mod tests {
     #[test]
     fn test_unwrap() {
         let v1 = Variant::Byte(0xFF);
-        assert_eq!(v1.as_byte(), 0xFF);
+        assert_eq!(v1.as_byte().unwrap(), 0xFF);
         let v2 = Variant::Word(0xFC00);
-        assert_eq!(v2.as_word(), 0xFC00);
+        assert_eq!(v2.as_word().unwrap(), 0xFC00);
         let v3 = Variant::Text(String::from("Hello"));
-        assert_eq!(v3.as_text(), String::from("Hello"));
+        assert_eq!(v3.as_text().unwrap(), String::from("Hello"));
     }
 }
 
