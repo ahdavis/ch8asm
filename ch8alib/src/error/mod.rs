@@ -25,5 +25,7 @@ mod lexer_error;
 pub use lexer_error::LexerError;
 mod addr_error;
 pub use addr_error::AddrError;
+mod variant_error;
+pub use variant_error::VariantError;
 
 //end of file
