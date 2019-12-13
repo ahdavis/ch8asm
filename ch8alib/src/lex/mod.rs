@@ -27,5 +27,7 @@ mod token;
 pub use token::Token;
 mod prep_lexer;
 pub use prep_lexer::PrepLexer;
+mod asm_lexer;
+pub use asm_lexer::AsmLexer;
 
 //end of file
