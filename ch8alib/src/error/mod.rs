@@ -27,5 +27,7 @@ mod addr_error;
 pub use addr_error::AddrError;
 mod variant_error;
 pub use variant_error::VariantError;
+mod asm_error;
+pub use asm_error::AsmError;
 
 //end of file
