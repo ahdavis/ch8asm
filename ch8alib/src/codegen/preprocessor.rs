@@ -125,12 +125,12 @@ mod tests {
     fn test_preprocess() {
         let mut prep = Preprocessor::new(CODE);
         let tab = prep.process();
-        assert!(tab.has_entry("_start"));
-        assert!(tab.has_entry("_loop"));
-        assert_eq!(tab.has_entry("_end"), false);
-        let start_addr = tab.get_entry("_start").unwrap();
+        assert!(tab.has_entry("_START"));
+        assert!(tab.has_entry("_START"));
+        assert_eq!(tab.has_entry("_END"), false);
+        let start_addr = tab.get_entry("_START").unwrap();
         assert_eq!(start_addr, constants::MEM_START);
-        let loop_addr = tab.get_entry("_loop").unwrap();
+        let loop_addr = tab.get_entry("_LOOP").unwrap();
         assert_eq!(loop_addr, constants::MEM_START + 2);
     }
 }

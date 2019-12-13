@@ -367,7 +367,7 @@ impl PrepLexer {
         //loop and generate the label
         while self.cur_char.is_ascii_alphabetic() &&
             !self.cur_char.is_ascii_whitespace() {
-            ret.push(self.cur_char);
+            ret.push(self.cur_char.to_ascii_uppercase());
             self.advance();
         }
 
@@ -425,7 +425,7 @@ mod tests {
         };
         assert_eq!(tok.get_type(), TokenType::LblDef);
         assert_eq!(lex.get_address(), constants::MEM_START + 4);
-        assert_eq!(lbl.as_str(), "_bin");
+        assert_eq!(lbl.as_str(), "_BIN");
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
         assert_eq!(lex.get_address(), constants::MEM_START + 5);
@@ -439,7 +439,7 @@ mod tests {
         };
         assert_eq!(tok.get_type(), TokenType::Label);
         assert_eq!(lex.get_address(), constants::MEM_START + 10);
-        assert_eq!(l2, "_start");
+        assert_eq!(l2, "_START");
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::EndOfInput);
         assert_eq!(lex.get_address(), constants::MEM_START + 12);

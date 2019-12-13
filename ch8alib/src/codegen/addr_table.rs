@@ -110,7 +110,7 @@ mod tests {
     fn test_size_updates() {
         let mut t = AddrTable::new();
         assert_eq!(t.get_size(), 0);
-        t.add_entry("_label", 0x0FFF);
+        t.add_entry("_LABEL", 0x0FFF);
         assert_eq!(t.get_size(), 1);
     }
 
@@ -118,8 +118,8 @@ mod tests {
     #[test]
     fn test_add_retrieve_labels() {
         let mut t = AddrTable::new();
-        t.add_entry("_label", 0x0FFF);
-        let addr = t.get_entry("_label").unwrap();
+        t.add_entry("_LABEL", 0x0FFF);
+        let addr = t.get_entry("_LABEL").unwrap();
         assert_eq!(addr, 0x0FFF);
     }
 
@@ -127,9 +127,9 @@ mod tests {
     #[test]
     fn test_has_entry() {
         let mut t = AddrTable::new();
-        assert_eq!(t.has_entry("_label"), false);
-        t.add_entry("_label", 0x0FFF);
-        assert_eq!(t.has_entry("_label"), true);
+        assert_eq!(t.has_entry("_LABEL"), false);
+        t.add_entry("_LABEL", 0x0FFF);
+        assert_eq!(t.has_entry("_LABEL"), true);
     }
 }
 

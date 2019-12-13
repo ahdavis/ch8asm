@@ -282,7 +282,7 @@ impl AsmLexer {
         //loop and collect the label
         while self.cur_char.is_ascii_alphabetic() &&
                 (self.cur_char != '\0') {
-            ret.push(self.cur_char);
+            ret.push(self.cur_char.to_ascii_uppercase());
             self.advance();
         }
 
@@ -437,26 +437,26 @@ mod tests {
         assert_eq!(tok.get_value(), Variant::Text(String::from("V2")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(tok.get_value(), Variant::Text(String::from("_hex")));
+        assert_eq!(tok.get_value(), Variant::Text(String::from("_HEX")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::HexLit);
         assert_eq!(tok.get_value(), Variant::Word(0xFC00));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(tok.get_value(), Variant::Text(String::from("_bin")));
+        assert_eq!(tok.get_value(), Variant::Text(String::from("_BIN")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::BinLit);
         assert_eq!(tok.get_value(), Variant::Byte(0xFF));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(tok.get_value(), Variant::Text(String::from("_dec")));
+        assert_eq!(tok.get_value(), Variant::Text(String::from("_DEC")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::DecLit);
         assert_eq!(tok.get_value(), Variant::Word(212));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
         assert_eq!(tok.get_value(), Variant::Text(
-                                        String::from("_start")));
+                                        String::from("_START")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::Instruction);
         assert_eq!(tok.get_value(), Variant::Text(String::from("CLS")));
@@ -482,7 +482,7 @@ mod tests {
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::Label);
         assert_eq!(tok.get_value(), Variant::Text(
-                                            String::from("_start")));
+                                            String::from("_START")));
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::Instruction);
         assert_eq!(tok.get_value(), Variant::Text(String::from("RET")));
