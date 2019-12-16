@@ -257,7 +257,7 @@ impl AsmLexer {
         //loop and collect the symbol
         while self.cur_char.is_ascii_alphabetic() &&
                 (self.cur_char != '\0') {
-            ret.push(self.cur_char);
+            ret.push(self.cur_char.to_ascii_uppercase());
             self.advance();
         }
 
@@ -308,7 +308,7 @@ impl AsmLexer {
         } else {
             let mut ret = String::from("V");
             self.advance();
-            ret.push(self.cur_char);
+            ret.push(self.cur_char.to_ascii_uppercase());
             self.advance();
             return ret;
         }
