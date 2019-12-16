@@ -38,8 +38,8 @@ pub enum AsmError {
 impl fmt::Debug for AsmError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            AsmError::Lexer(le) => write!(f, "{:?}", le),
-            AsmError::Parser(pe) => write!(f, "{:?}", pe)
+            AsmError::Lexer(ref le) => write!(f, "{:?}", le),
+            AsmError::Parser(ref pe) => write!(f, "{:?}", pe)
         }
     }
 }
@@ -48,8 +48,8 @@ impl fmt::Debug for AsmError {
 impl fmt::Display for AsmError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            AsmError::Lexer(le) => write!(f, "{}", le),
-            AsmError::Parser(pe) => write!(f, "{}", pe)
+            AsmError::Lexer(ref le) => write!(f, "{}", le),
+            AsmError::Parser(ref pe) => write!(f, "{}", pe)
         }
     }
 }
