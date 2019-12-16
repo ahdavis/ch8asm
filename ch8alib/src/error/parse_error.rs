@@ -1,6 +1,6 @@
 /*
- * asm_error.rs
- * Defines an error generated when assembly fails
+ * parse_error.rs
+ * Defines an error generated when a parser encounters an error
  * Created on 12/13/2019
  * Created by Andrew Davis
  *
@@ -24,8 +24,8 @@
 use super::super::lex::TokenType;
 use std::fmt;
 
-/// Generated when Chip-8 assembly fails
-pub struct AsmError {
+/// Generated when a Chip-8 parser encounters an error 
+pub struct ParseError {
     /// The expected token
     expected: TokenType,
 
@@ -40,8 +40,8 @@ pub struct AsmError {
 }
 
 //implementation
-impl AsmError {
-    /// Constructs a new `AsmError` instance
+impl ParseError {
+    /// Constructs a new `ParseError` instance
     ///
     /// # Arguments
     ///
@@ -52,10 +52,10 @@ impl AsmError {
     /// 
     /// # Returns
     ///
-    /// A new `AsmError` instance with the given properties
+    /// A new `ParseError` instance with the given properties
     pub fn new(new_expected: &TokenType, new_actual: &TokenType,
                new_line: u32, new_col: u32) -> Self {
-        return AsmError {
+        return ParseError {
             expected: new_expected.clone(),
             actual: new_actual.clone(),
             line: new_line,
@@ -65,14 +65,14 @@ impl AsmError {
 }
 
 //Debug implementation
-impl fmt::Debug for AsmError {
+impl fmt::Debug for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{{ file: {}, line: {} }}", file!(), line!())
     }
 }
 
 //Display implementation
-impl fmt::Display for AsmError {
+impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}:{}): Expected {}, found {}", 
                self.line, self.col, self.expected, self.actual)
