@@ -24,6 +24,7 @@
 use super::TokenType;
 use super::super::util::Variant;
 use std::cmp;
+use std::clone;
 
 /// A program token
 #[derive(Debug)]
@@ -77,6 +78,16 @@ impl Token {
 impl cmp::PartialEq for Token {
     fn eq(&self, rhs: &Self) -> bool {
         return (self.ttype == rhs.ttype) && (self.value == rhs.value);
+    }
+}
+
+//Clone implementation
+impl clone::Clone for Token {
+    fn clone(&self) -> Self {
+        return Token {
+            ttype: self.ttype.clone(),
+            value: self.value.clone()
+        };
     }
 }
 
