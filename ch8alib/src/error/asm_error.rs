@@ -27,6 +27,7 @@ extern crate ch8_isa;
 use super::LexerError;
 use super::ParseError;
 use super::OpcodeError;
+use super::AddrError;
 use ch8_isa::error::BinaryError;
 use std::fmt;
 
@@ -42,7 +43,10 @@ pub enum AsmError {
     Opcode(OpcodeError),
 
     /// A binary generation error
-    Binary(BinaryError)
+    Binary(BinaryError),
+
+    /// An address retrieval error
+    Address(AddrError)
 }
 
 //Debug implementation
@@ -52,7 +56,8 @@ impl fmt::Debug for AsmError {
             AsmError::Lexer(ref le) => write!(f, "{:?}", le),
             AsmError::Parser(ref pe) => write!(f, "{:?}", pe),
             AsmError::Opcode(ref oe) => write!(f, "{:?}", oe),
-            AsmError::Binary(ref be) => write!(f, "{:?}", be)
+            AsmError::Binary(ref be) => write!(f, "{:?}", be),
+            AsmError::Address(ref ae) => write!(f, "{:?}", ae)
         }
     }
 }
@@ -64,7 +69,8 @@ impl fmt::Display for AsmError {
             AsmError::Lexer(ref le) => write!(f, "{}", le),
             AsmError::Parser(ref pe) => write!(f, "{}", pe),
             AsmError::Opcode(ref oe) => write!(f, "{}", oe),
-            AsmError::Binary(ref be) => write!(f, "{}", be)
+            AsmError::Binary(ref be) => write!(f, "{}", be),
+            AsmError::Address(ref ae) => write!(f, "{}", ae)
         }
     }
 }
