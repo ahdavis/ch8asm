@@ -29,5 +29,7 @@ mod variant_error;
 pub use variant_error::VariantError;
 mod parse_error;
 pub use parse_error::ParseError;
+mod asm_error;
+pub use asm_error::AsmError;
 
 //end of file
