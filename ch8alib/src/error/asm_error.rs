@@ -20,10 +20,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//crate import
+extern crate ch8_isa;
+
 //usage statements
 use super::LexerError;
 use super::ParseError;
 use super::OpcodeError;
+use ch8_isa::error::BinaryError;
 use std::fmt;
 
 /// An error generated when assembling a Chip-8 binary
@@ -35,7 +39,10 @@ pub enum AsmError {
     Parser(ParseError),
 
     /// An opcode generation error
-    Opcode(OpcodeError)
+    Opcode(OpcodeError),
+
+    /// A binary generation error
+    Binary(BinaryError)
 }
 
 //Debug implementation
@@ -44,7 +51,8 @@ impl fmt::Debug for AsmError {
         match *self {
             AsmError::Lexer(ref le) => write!(f, "{:?}", le),
             AsmError::Parser(ref pe) => write!(f, "{:?}", pe),
-            AsmError::Opcode(ref oe) => write!(f, "{:?}", oe)
+            AsmError::Opcode(ref oe) => write!(f, "{:?}", oe),
+            AsmError::Binary(ref be) => write!(f, "{:?}", be)
         }
     }
 }
@@ -55,7 +63,8 @@ impl fmt::Display for AsmError {
         match *self {
             AsmError::Lexer(ref le) => write!(f, "{}", le),
             AsmError::Parser(ref pe) => write!(f, "{}", pe),
-            AsmError::Opcode(ref oe) => write!(f, "{}", oe)
+            AsmError::Opcode(ref oe) => write!(f, "{}", oe),
+            AsmError::Binary(ref be) => write!(f, "{}", be)
         }
     }
 }
