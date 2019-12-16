@@ -23,6 +23,7 @@
 //usage statements
 use super::LexerError;
 use super::ParseError;
+use super::OpcodeError;
 use std::fmt;
 
 /// An error generated when assembling a Chip-8 binary
@@ -31,7 +32,10 @@ pub enum AsmError {
     Lexer(LexerError),
 
     /// A parser error
-    Parser(ParseError)
+    Parser(ParseError),
+
+    /// An opcode generation error
+    Opcode(OpcodeError)
 }
 
 //Debug implementation
@@ -39,7 +43,8 @@ impl fmt::Debug for AsmError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             AsmError::Lexer(ref le) => write!(f, "{:?}", le),
-            AsmError::Parser(ref pe) => write!(f, "{:?}", pe)
+            AsmError::Parser(ref pe) => write!(f, "{:?}", pe),
+            AsmError::Opcode(ref oe) => write!(f, "{:?}", oe)
         }
     }
 }
@@ -49,7 +54,8 @@ impl fmt::Display for AsmError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             AsmError::Lexer(ref le) => write!(f, "{}", le),
-            AsmError::Parser(ref pe) => write!(f, "{}", pe)
+            AsmError::Parser(ref pe) => write!(f, "{}", pe),
+            AsmError::Opcode(ref oe) => write!(f, "{}", oe)
         }
     }
 }
