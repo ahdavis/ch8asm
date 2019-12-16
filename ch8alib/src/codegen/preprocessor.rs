@@ -23,8 +23,8 @@
 //usage statements
 use super::super::lex::*;
 use super::super::util::Variant;
+use super::super::error::LexerError;
 use super::AddrTable;
-use std::process::exit;
 
 /// Preprocesses Chip-8 assembly code
 pub struct Preprocessor {
@@ -64,34 +64,23 @@ impl Preprocessor {
     ///
     /// # Returns
     ///
-    /// An `AddrTable` instance containing the preprocessed text
-    pub fn process(&mut self) -> AddrTable {
+    /// An `AddrTable` instance containing the preprocessed text,
+    /// wrapped in a `Result`
+    pub fn process(&mut self) -> Result<AddrTable, LexerError>  {
         //create the table
         let mut ret = AddrTable::new();
 
         //loop and preprocess the text
         loop {
             //get the current token
-            match self.lexer.get_next_token() {
-                Ok(t) => self.cur_token = t,
-                Err(err) =>  {
-                    println!("{}", err);
-                    exit(1)
-                }
-            };
+            self.cur_token = self.lexer.get_next_token()?;
 
             //add the token to the table if it's not an EOI or 
             //label reference token
             if (self.cur_token.get_type() != TokenType::EndOfInput)
                 && (self.cur_token.get_type() != TokenType::Label) {
-                let tr = self.cur_token.get_value().as_text();
-                match tr {
-                    Ok(t) => ret.add_entry(&t, self.lexer.get_address()),
-                    Err(err) => {
-                        println!("{}", err);
-                        exit(1)
-                    }
-                };
+                let t = self.cur_token.get_value().as_text().unwrap();
+                ret.add_entry(&t, self.lexer.get_address()); 
             }
 
             //and determine whether to end the loop
@@ -101,7 +90,7 @@ impl Preprocessor {
         }
 
         //and return the table
-        return ret;
+        return Ok(ret);
     }
 }
 
@@ -124,7 +113,7 @@ mod tests {
     #[test]
     fn test_preprocess() {
         let mut prep = Preprocessor::new(CODE);
-        let tab = prep.process();
+        let tab = prep.process().unwrap();
         assert!(tab.has_entry("_START"));
         assert!(tab.has_entry("_START"));
         assert_eq!(tab.has_entry("_END"), false);
