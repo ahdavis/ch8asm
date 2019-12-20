@@ -51,7 +51,6 @@ impl ArgError {
     ///
     /// * `new_arg` - The bad argument
     /// * `new_instr` - The instruction that had the bad argument 
-    /// * `new_pos` - The position of the bad argument in the arglist
     /// * `new_line` - The line number of the bad argument 
     /// * `new_col` - The column number of the bad argument
     /// 
