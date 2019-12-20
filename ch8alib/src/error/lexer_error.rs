@@ -62,7 +62,7 @@ impl LexerError {
 //Debug implementation
 impl fmt::Debug for LexerError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{{ file: {}, line: {} }}", file!(), line!())
+        write!(f, "{}", self)
     }
 }
 

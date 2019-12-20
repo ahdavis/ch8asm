@@ -60,7 +60,7 @@ impl OpcodeError {
 //Debug implementation
 impl fmt::Debug for OpcodeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{{ file: {}, line: {} }}", file!(), line!())
+        write!(f, "{}", self)
     }
 }
 

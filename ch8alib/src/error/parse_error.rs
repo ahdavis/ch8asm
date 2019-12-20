@@ -67,7 +67,7 @@ impl ParseError {
 //Debug implementation
 impl fmt::Debug for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{{ file: {}, line: {} }}", file!(), line!())
+        write!(f, "{}", self)
     }
 }
 
