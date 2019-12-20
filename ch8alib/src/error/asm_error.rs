@@ -28,6 +28,7 @@ use super::LexerError;
 use super::ParseError;
 use super::OpcodeError;
 use super::AddrError;
+use super::ArgError;
 use ch8_isa::error::BinaryError;
 use std::fmt;
 
@@ -46,7 +47,10 @@ pub enum AsmError {
     Binary(BinaryError),
 
     /// An address retrieval error
-    Address(AddrError)
+    Address(AddrError),
+
+    /// An argument error
+    Argument(ArgError)
 }
 
 //Debug implementation
@@ -57,7 +61,8 @@ impl fmt::Debug for AsmError {
             AsmError::Parser(ref pe) => write!(f, "{:?}", pe),
             AsmError::Opcode(ref oe) => write!(f, "{:?}", oe),
             AsmError::Binary(ref be) => write!(f, "{:?}", be),
-            AsmError::Address(ref ae) => write!(f, "{:?}", ae)
+            AsmError::Address(ref ae) => write!(f, "{:?}", ae),
+            AsmError::Argument(ref ae) => write!(f, "{:?}", ae)
         }
     }
 }
@@ -70,7 +75,8 @@ impl fmt::Display for AsmError {
             AsmError::Parser(ref pe) => write!(f, "{}", pe),
             AsmError::Opcode(ref oe) => write!(f, "{}", oe),
             AsmError::Binary(ref be) => write!(f, "{}", be),
-            AsmError::Address(ref ae) => write!(f, "{}", ae)
+            AsmError::Address(ref ae) => write!(f, "{}", ae),
+            AsmError::Argument(ref ae) => write!(f, "{}", ae)
         }
     }
 }
