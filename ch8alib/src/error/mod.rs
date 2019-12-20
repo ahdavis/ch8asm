@@ -33,5 +33,7 @@ mod asm_error;
 pub use asm_error::AsmError;
 mod opcode_error;
 pub use opcode_error::OpcodeError;
+mod arg_error;
+pub use arg_error::ArgError;
 
 //end of file
