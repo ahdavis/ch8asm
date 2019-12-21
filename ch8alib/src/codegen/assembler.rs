@@ -373,6 +373,23 @@ impl Assembler {
 
                     //and return the instruction
                     Ok(Instruction::MOV(data))
+                } else if ttype == TokenType::Label {
+                    //ensure that vx is the `I` register
+                    if vx != data::Register::I {
+                        return Err(AsmError::Argument(
+                                    ArgError::new(&vx, "MOV",
+                                            self.lexer.get_line(),
+                                            self.lexer.get_column())));
+                    }
+
+                    //parse the label
+                    let addr = self.label()?;
+
+                    //assemble the data
+                    let data = data::MovData::with_constant(vx, addr);
+
+                    //and return the instruction
+                    Ok(Instruction::MOV(data))
                 } else {
                     //get the constant
                     let cst = self.constant()?;
