@@ -226,7 +226,6 @@ impl AsmLexer {
             if (self.cur_char == '\n') || (self.cur_char == '\r') {
                 self.line += 1;
                 self.col = 1;
-                self.advance();
             }
 
             //and advance the lexer
