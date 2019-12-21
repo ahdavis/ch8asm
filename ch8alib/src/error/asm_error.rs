@@ -29,6 +29,7 @@ use super::ParseError;
 use super::OpcodeError;
 use super::AddrError;
 use super::ArgError;
+use super::SkipError;
 use ch8_isa::error::BinaryError;
 use std::fmt;
 
@@ -50,7 +51,10 @@ pub enum AsmError {
     Address(AddrError),
 
     /// An argument error
-    Argument(ArgError)
+    Argument(ArgError),
+
+    /// A skiptype error
+    Skip(SkipError)
 }
 
 //Debug implementation
@@ -62,7 +66,8 @@ impl fmt::Debug for AsmError {
             AsmError::Opcode(ref oe) => write!(f, "{:?}", oe),
             AsmError::Binary(ref be) => write!(f, "{:?}", be),
             AsmError::Address(ref ae) => write!(f, "{:?}", ae),
-            AsmError::Argument(ref ae) => write!(f, "{:?}", ae)
+            AsmError::Argument(ref ae) => write!(f, "{:?}", ae),
+            AsmError::Skip(ref se) => write!(f, "{:?}", se)
         }
     }
 }
@@ -76,7 +81,8 @@ impl fmt::Display for AsmError {
             AsmError::Opcode(ref oe) => write!(f, "{}", oe),
             AsmError::Binary(ref be) => write!(f, "{}", be),
             AsmError::Address(ref ae) => write!(f, "{}", ae),
-            AsmError::Argument(ref ae) => write!(f, "{}", ae)
+            AsmError::Argument(ref ae) => write!(f, "{}", ae),
+            AsmError::Skip(ref se) => write!(f, "{}", se)
         }
     }
 }
