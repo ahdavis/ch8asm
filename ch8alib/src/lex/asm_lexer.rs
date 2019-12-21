@@ -150,7 +150,7 @@ impl AsmLexer {
 
                 //check to see if it's a skiptype
                 if ((sym == "EQ") || (sym == "NE")) ||
-                    ((sym == "KEY") || (sym == "NOKEY")) {
+                    ((sym == "KD") || (sym == "KU")) {
                     return Ok(Token::new(TokenType::SkipCond,
                                     Variant::Text(sym)));
                 } else {
