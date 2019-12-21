@@ -144,7 +144,6 @@ impl PrepLexer {
             //process instructions
             if self.cur_char.is_ascii_alphabetic() {
                 self.consume_instr();
-                self.update_addr();
                 continue;
             }
 
@@ -185,13 +184,11 @@ impl PrepLexer {
                     return Ok(Token::new(TokenType::LblDef,
                                 Variant::Text(String::from(tlbl))));
                 } else { //is not a definition
-                    //advance past the label reference
-                    self.nib_count += 2;
-
-                    //update the address
+                    //move past the label
+                    self.nib_count += 3;
                     self.update_addr();
 
-                    //and return the label token
+                    //return the label token
                     return Ok(Token::new(TokenType::Label,
                                     Variant::Text(lbl)));
                 }
@@ -244,7 +241,6 @@ impl PrepLexer {
             if (self.cur_char == '\n') || (self.cur_char == '\r') {
                 self.line += 1;
                 self.col = 1;
-                self.advance();
             }
 
             //and advance the lexer
@@ -291,18 +287,96 @@ impl PrepLexer {
         let mut op = String::new();
         while (self.cur_char.is_ascii_alphabetic() 
                || self.cur_char == '.') 
-            && !self.cur_char.is_whitespace() {
+            && !self.cur_char.is_ascii_whitespace() {
             op.push(self.cur_char.to_ascii_uppercase());
             self.advance();
         }
 
-        //increment the nibble count
-        //CLS (0x00E0) and RET (0x00EE) are the only
-        //2-byte instructions
-        if (op == "CLS") || (op == "RET") {
-            self.nib_count += 4;
-        } else {
-            self.nib_count += 2;
+        //and increment the nibble count
+        let mut should_update = false;
+        match op.as_str() {
+            "CLS" => {
+                self.nib_count += 4;
+                should_update = true;
+            },
+            "RET" => {
+                self.nib_count += 4;
+                should_update = true;
+            },
+            "ADD" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "AND" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "BCD" => self.nib_count += 3,
+            "CALL" => {
+                self.nib_count += 1;
+                should_update = true;
+            },
+            "DRAW" => {
+                self.nib_count += 1;
+                should_update = true;
+            },
+            "GDL" => self.nib_count += 3,
+            "JMP" => {
+                self.nib_count += 1;
+                should_update = true;
+            },
+            "JPC" => {
+                self.nib_count += 1;
+                should_update = true;
+            },
+            "KEY" => self.nib_count += 3,
+            "MOV" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "OR" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "RAND" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "RDP" => self.nib_count += 3,
+            "RLD" => self.nib_count += 3,
+            "SCH" => self.nib_count += 3,
+            "SDL" => self.nib_count += 3,
+            "SHL" => self.nib_count += 3,
+            "SHR" => self.nib_count += 3,
+            "SKIP.EQ" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "SKIP.NE" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "SKIP.KD" => self.nib_count += 3,
+            "SKIP.KU" => self.nib_count += 3,
+            "SND" => self.nib_count += 3,
+            "SUB" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "SUBN" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            "XOR" => {
+                self.nib_count += 2;
+                should_update = true;
+            },
+            _ => {}
+        };
+
+        //and update the address
+        if should_update {
+            self.update_addr();
         }
     }
 
@@ -319,11 +393,16 @@ impl PrepLexer {
         }
 
         //calculate the nibbles in the sum
-        let bits = sum.parse::<f32>().unwrap().log2().ceil();
-        let nibs_advanced = (bits / 4.0).ceil() as u32;
+        let num = sum.parse::<u16>().unwrap();
         
-        //and advance the nib count
-        self.nib_count += nibs_advanced;
+        //and advance the address
+        if num > 0x00FF {
+            self.nib_count += 3;
+        } else if num > 0x000F {
+            self.nib_count += 2;
+        } else {
+            self.nib_count += 1;
+        }
     }
 
     /// Consumes a hex integer literal
@@ -357,6 +436,10 @@ impl PrepLexer {
     }
 
     /// Consumes a label
+    ///
+    /// # Returns
+    ///
+    /// The consumed label 
     fn consume_label(&mut self) -> String {
         //create the return value
         let mut ret = String::from("_");
@@ -391,6 +474,7 @@ mod tests {
 
     //define strings to be lexed
     const LEX_STR: &str = "MOV V1, V2 
+                    MOV V3, $F
                     _hex:
                     $FC00
                     _bin:
@@ -417,32 +501,32 @@ mod tests {
         let mut lex = PrepLexer::new(LEX_STR);
         let mut tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(lex.get_address(), constants::MEM_START + 2);
+        assert_eq!(lex.get_address(), constants::MEM_START + 4);
         tok = lex.get_next_token().unwrap();
         let lbl = match tok.get_value() {
             Variant::Text(l) => l,
             _ => panic!("Bad token")
         };
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(lex.get_address(), constants::MEM_START + 4);
+        assert_eq!(lex.get_address(), constants::MEM_START + 6);
         assert_eq!(lbl.as_str(), "_BIN");
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(lex.get_address(), constants::MEM_START + 5);
+        assert_eq!(lex.get_address(), constants::MEM_START + 7);
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::LblDef);
-        assert_eq!(lex.get_address(), constants::MEM_START + 6);
+        assert_eq!(lex.get_address(), constants::MEM_START + 8);
         tok = lex.get_next_token().unwrap();
         let l2 = match tok.get_value() {
             Variant::Text(l) => l,
             _ => panic!("Bad token")
         };
         assert_eq!(tok.get_type(), TokenType::Label);
-        assert_eq!(lex.get_address(), constants::MEM_START + 10);
+        assert_eq!(lex.get_address(), constants::MEM_START + 12);
         assert_eq!(l2, "_START");
         tok = lex.get_next_token().unwrap();
         assert_eq!(tok.get_type(), TokenType::EndOfInput);
-        assert_eq!(lex.get_address(), constants::MEM_START + 12);
+        assert_eq!(lex.get_address(), constants::MEM_START + 14);
     }
 }
 
