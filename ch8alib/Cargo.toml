@@ -3,6 +3,7 @@ name = "ch8alib"
 version = "0.1.0"
 authors = ["ahdavis <ahdavis13@gmail.com>"]
 edition = "2018"
+description = "Workspace dependency for ch8asm"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
