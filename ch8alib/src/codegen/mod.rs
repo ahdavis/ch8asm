@@ -25,5 +25,7 @@ mod addr_table;
 pub use addr_table::AddrTable;
 mod preprocessor;
 pub use preprocessor::Preprocessor;
+mod assembler;
+pub use assembler::Assembler;
 
 //end of file
