@@ -3,8 +3,10 @@ name = "ch8asm"
 version = "0.1.0"
 authors = ["ahdavis <ahdavis13@gmail.com>"]
 edition = "2018"
+license = "GPL-3.0+"
+description = "Open-source Chip-8 assembler"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ch8alib = { path = "../ch8alib" }
+ch8alib = { version= "0.1.0", path = "../ch8alib" }
