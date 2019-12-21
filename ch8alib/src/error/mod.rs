@@ -35,5 +35,7 @@ mod opcode_error;
 pub use opcode_error::OpcodeError;
 mod arg_error;
 pub use arg_error::ArgError;
+mod skip_error;
+pub use skip_error::SkipError;
 
 //end of file
