@@ -135,7 +135,8 @@ impl PrepLexer {
             }
 
             //process register references
-            if (self.cur_char == 'V') || (self.cur_char == 'I') {
+            if (self.cur_char.to_ascii_uppercase() == 'V') 
+                || (self.cur_char.to_ascii_uppercase() == 'I') {
                 self.consume_register();
                 self.update_addr();
                 continue;
