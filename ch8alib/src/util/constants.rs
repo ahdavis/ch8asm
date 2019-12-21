@@ -37,4 +37,7 @@ pub const HEX_LIT_CHAR: char = '$';
 /// The character that denotes the start of a binary literal
 pub const BIN_LIT_CHAR: char = '%';
 
+/// The amount of memory available on a Chip-8 system
+pub const MEM_SIZE: u16 = 0x1000;
+
 //end of file
