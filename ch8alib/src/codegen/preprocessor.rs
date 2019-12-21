@@ -22,7 +22,6 @@
 
 //usage statements
 use super::super::lex::*;
-use super::super::util::Variant;
 use super::super::error::LexerError;
 use super::AddrTable;
 
@@ -45,14 +44,17 @@ impl Preprocessor {
     /// 
     /// # Returns
     ///
-    /// A new `Preprocessor` instance with the given lexer
-    pub fn new(new_code: &str) -> Self {
+    /// A new `Preprocessor` instance with the given code,
+    /// wrapped in a `Result`
+    pub fn new(new_code: &str) -> Result<Self, LexerError> {
+        let mut lex = PrepLexer::new(new_code);
+        let tok = lex.get_next_token()?;
+
         //and return the instance
-        return Preprocessor {
-            lexer: PrepLexer::new(new_code),
-            cur_token: Token::new(TokenType::EndOfInput,  
-                                  Variant::Byte(0xFF))
-        };
+        return Ok(Preprocessor {
+            lexer: lex,
+            cur_token: tok 
+        });
     }
 
     /// Preprocesses the source code given to the lexer 
@@ -70,15 +72,25 @@ impl Preprocessor {
         //create the table
         let mut ret = AddrTable::new();
 
+        //add the first token
+        if self.cur_token.get_type() != TokenType::EndOfInput {
+            ret.add_entry(&self.cur_token.get_value().as_text().unwrap(),
+                            self.lexer.get_address());
+        }
+
         //loop and preprocess the text
         loop {
             //get the current token
             self.cur_token = self.lexer.get_next_token()?;
 
+            //discard labels
+            while self.cur_token.get_type() == TokenType::Label {
+                self.cur_token = self.lexer.get_next_token()?;
+            }
+
             //add the token to the table if it's not an EOI or 
             //label reference token
-            if (self.cur_token.get_type() != TokenType::EndOfInput)
-                && (self.cur_token.get_type() != TokenType::Label) {
+            if self.cur_token.get_type() != TokenType::EndOfInput{
                 let t = self.cur_token.get_value().as_text().unwrap();
                 ret.add_entry(&t, self.lexer.get_address()); 
             }
@@ -112,7 +124,7 @@ mod tests {
     //this test checks preprocessing code
     #[test]
     fn test_preprocess() {
-        let mut prep = Preprocessor::new(CODE);
+        let mut prep = Preprocessor::new(CODE).unwrap();
         let tab = prep.process().unwrap();
         assert!(tab.has_entry("_START"));
         assert!(tab.has_entry("_START"));

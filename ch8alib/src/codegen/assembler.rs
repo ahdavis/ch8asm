@@ -74,7 +74,10 @@ impl Assembler {
         };
 
         //create the preprocessor
-        let mut prep = Preprocessor::new(code);
+        let mut prep = match Preprocessor::new(code) {
+            Ok(p) => p,
+            Err(le) => return Err(AsmError::Lexer(le))
+        };
 
         //preprocess the code
         let new_addrs = match prep.process() {
