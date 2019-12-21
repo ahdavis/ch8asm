@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//crate import statements
+//crate import statement
 extern crate ch8alib;
 
 //usage statements
@@ -29,6 +29,7 @@ use std::path::Path;
 use std::fs;
 use ch8alib::codegen::Assembler;
 use ch8alib::util::conv_filename;
+use ch8alib::util::constants;
 
 //Entry point for the program
 fn main() {
@@ -83,7 +84,13 @@ fn main() {
 
     //write the binary to its destination
     match bin.write_to_file() {
-        Ok(_n) => {},
+        Ok(n) => {
+            if (n as u16 + constants::MEM_START) >= constants::MEM_SIZE {
+                eprintln!("Binary is too large ({} bytes)", n);
+                fs::remove_file(asm_name).unwrap();
+                return;
+            }
+        },
         Err(e) => {
             eprintln!("{}", e);
             return;
